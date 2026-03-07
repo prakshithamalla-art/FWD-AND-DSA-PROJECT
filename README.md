@@ -79,6 +79,149 @@ your-old-thing-treasure/
 ```
 
 ---
+Frontend Features (FWD)
+
+Authentication System
+- Login page with email and password fields
+- Demo credentials pre-filled for easy testing
+- Session persistence using browser localStorage
+- Redirect to profile page after successful login
+- Logout functionality to clear session
+
+User Profile Dashboard
+- Personal dashboard displaying user information
+- Cart section showing items added with remove option
+- Wishlist section to view saved favorite items
+- Trade history tracking all proposals and status
+- Cart total calculation for items added
+
+Item Marketplace
+- Grid display with 6 sample items
+- Category filter buttons for Kitchen, Tech, Clothing, Books, Tools, Misc
+- Search bar for real-time item filtering
+- Sort options including Price Low to High, Price High to Low, and Name A-Z
+- Item cards showing emoji, title, price, and usage meter
+- Seeking tags displaying what items the owner wants
+- Details button for more information about each item
+
+Shopping Features
+- Add to Wishlist functionality with heart icon
+- Add to Cart functionality with shopping cart icon
+- Propose Trade option for each item
+- Remove items from cart and wishlist
+- Checkout process that creates trade records
+
+---
+
+## Backend Features (DSA)
+
+Linked List Implementations
+- Singly Linked List in LinkedList.java for trade history storage
+- Doubly Linked List in DoublyLinkedList.java for bidirectional item traversal
+- Circular Linked List in CircularLinkedList.java for wrap-around recently viewed items
+
+Stack and Queue Implementations
+- Stack in Stack.java for LIFO search history management
+- Queue in Queue.java for FIFO trade request processing
+- Circular Queue in CircularQueue.java for fixed-size recent items buffer
+- Deque in Deque.java for double-ended wishlist operations
+
+Heap and Priority Queue Implementations
+- Priority Queue in PriorityQueue.java for urgent trades with O(log n) operations
+- Binary Heap in BinaryHeap.java for price filtering and min-heap operations
+
+Tree and Hash Table Implementations
+- Hash Table in HashTable.java with separate chaining for O(1) user authentication
+- Binary Search Tree in BinarySearchTree.java for O(log n) category search
+
+Searching Algorithms
+- Linear Search with O(n) time complexity
+- Binary Search with O(log n) time complexity for sorted data
+
+Sorting Algorithms
+- Bubble Sort with O(n²) time complexity
+- Insertion Sort with O(n²) time complexity
+- Selection Sort with O(n²) time complexity
+- Merge Sort with O(n log n) time complexity
+- Quick Sort with O(n log n) average time complexity
+
+---
+
+## Technologies Used
+
+Frontend (FWD)
+- HTML5 for page structure
+- CSS3 for styling and animations
+- JavaScript ES6 for functionality
+- LocalStorage for data persistence
+
+Backend (DSA)
+- Java JDK for programming
+- VS Code as development environment
+- No external libraries - pure Java implementations
+
+---
+
+## How to Run
+
+Frontend (FWD)
+1. Go to the fwd folder
+2. Open index.html in any browser (Chrome, Firefox, Edge)
+3. Use the login page to access profile
+
+Backend (DSA)
+1. Go to the dsa folder in terminal
+2. Compile all files: javac *.java
+3. Run the program: java Main
+4. Follow menu options to test data structures
+
+---
+
+## Login Credentials
+
+User Account 1
+- Email: praks@demo.com
+- Password: praks123
+
+User Account 2
+- Email: bomm@demo.com
+- Password: bomm123
+
+---
+
+## CO-Wise Implementation
+
+FWD (Frontend Web Development)
+
+CO1: Internet Fundamentals, HTML & CSS
+- HTML5 document structure with semantic tags
+- CSS styling with responsive design
+- Flexbox and Grid layouts
+- CSS variables for theming
+
+CO2: Forms, Semantic Tags & Advanced CSS
+- Login forms with input fields
+- CSS animations and hover effects
+- Media queries for mobile responsiveness
+- Glass morphism design
+
+CO3: JavaScript Programming Essentials
+- Arrays and objects for data storage
+- Functions and arrow functions
+- Array methods (map, filter, forEach)
+- Conditional logic and loops
+
+CO4: JavaScript Interactivity, DOM & Events
+- Event handling for button clicks
+- DOM manipulation for dynamic content
+- LocalStorage for data persistence
+- JSON parsing and stringifying
+
+CO5: Advanced Web Development & Deployment
+- Form validation for user inputs
+- GitHub repository management
+- Static site deployment ready
+
 
 ## 📊 CO-Wise Implementation
 
@@ -208,3 +351,4 @@ This project is open-source and available for educational purposes.
 
 **🌟 Your Old Thing Is Someone's New Treasure**  
 *Where every item has a story, and every story deserves a second chapter.*
+
