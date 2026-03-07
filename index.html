@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreasureSwap — Your Old Thing Is Someone's New Treasure</title>
+  <meta name="description" content="India's friendliest peer-to-peer barter marketplace. Trade what you have for what you want.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">♻️</div>
+      <div class="nav-logo-text">
+        TreasureSwap
+        <span>barter &amp; trade</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">Browse</a>
+      <a href="profile.html" class="nav-link">My Profile</a>
+    </div>
+
+    <div class="nav-right">
+      <!-- Wishlist -->
+      <a href="profile.html" class="nav-icon-btn" title="Wishlist">
+        ❤️
+        <span class="nav-badge" id="navWishBadge" style="display:none">0</span>
+      </a>
+      <!-- Cart -->
+      <a href="profile.html" class="nav-icon-btn" title="Cart">
+        🛒
+        <span class="nav-badge" id="navCartBadge" style="display:none">0</span>
+      </a>
+      <!-- Login button (logged out) -->
+      <a href="login.html" class="btn btn-primary btn-sm" id="navLoginBtn">Sign In</a>
+      <!-- Profile link (logged in) -->
+      <a href="profile.html" id="navProfileBtn" style="display:none">
+        <div class="nav-avatar" id="navAvatar">🧑</div>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">♻️ Give things a second life</div>
+    <h1 class="hero-title">
+      Your Old Thing Is<br>
+      <span class="accent">Someone's New Treasure</span>
+    </h1>
+    <p class="hero-sub">
+      No money required — just swap what you have for what you want.
+      Reduce waste, discover gems, build community.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="#browse" class="btn btn-primary btn-lg">Browse Items ↓</a>
+      <a href="login.html" class="btn btn-outline btn-lg" id="heroSignupBtn">List an Item →</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val">6</div>
+        <div class="hero-stat-lbl">Items Available</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">2</div>
+        <div class="hero-stat-lbl">Trusted Traders</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">5</div>
+        <div class="hero-stat-lbl">Categories</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">₹0</div>
+        <div class="hero-stat-lbl">Platform Fees</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TOOLBAR ══════════════ -->
+<div class="toolbar" id="browse">
+  <div class="container">
+    <div class="toolbar-inner">
+      <!-- Search -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search items, categories, descriptions…"
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- Category filters -->
+      <div class="filter-chips">
+        <button class="filter-chip active" data-cat="all">All</button>
+        <button class="filter-chip" data-cat="kitchen">🍳 Kitchen</button>
+        <button class="filter-chip" data-cat="tech">💻 Tech</button>
+        <button class="filter-chip" data-cat="clothing">👔 Clothing</button>
+        <button class="filter-chip" data-cat="books">📚 Books</button>
+        <button class="filter-chip" data-cat="tools">🔧 Tools</button>
+      </div>
+
+      <!-- Sort -->
+      <select class="sort-select" id="sortSelect">
+        <option value="default">Sort: Default</option>
+        <option value="price_asc">Price: Low → High</option>
+        <option value="price_desc">Price: High → Low</option>
+        <option value="name_asc">Name: A → Z</option>
+        <option value="newest">Newest First</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ITEMS SECTION ══════════════ -->
+<main>
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px">
+      <div>
+        <div class="section-title">Available Items</div>
+        <div class="result-meta" id="resultMeta">Showing all 6 items</div>
+      </div>
+      <div style="font-size:.82rem;color:var(--text4)">Click any item to see details</div>
+    </div>
+    <div class="items-grid" id="itemsGrid"></div>
+  </div>
+</main>
+
+<!-- ══════════════ HOW IT WORKS ══════════════ -->
+<section class="section" style="background:rgba(67,97,238,.03);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border)">
+  <div class="container">
+    <div class="text-center mb-3">
+      <h2>How TreasureSwap Works</h2>
+      <p class="text-muted mt-1">Three simple steps to your next treasure</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+      <div class="card p-4 text-center">
+        <div style="font-size:2.5rem;margin-bottom:12px">📸</div>
+        <h3>1. Browse & Discover</h3>
+        <p class="text-muted mt-1" style="font-size:.875rem">Explore items listed by your community. Filter by category, search by name, or just scroll!</p>
+      </div>
+      <div class="card p-4 text-center">
+        <div style="font-size:2.5rem;margin-bottom:12px">🤝</div>
+        <h3>2. Propose a Trade</h3>
+        <p class="text-muted mt-1" style="font-size:.875rem">Found something you love? Add it to your cart and propose a trade. The owner can accept or decline.</p>
+      </div>
+      <div class="card p-4 text-center">
+        <div style="font-size:2.5rem;margin-bottom:12px">✨</div>
+        <h3>3. Make the Swap</h3>
+        <p class="text-muted mt-1" style="font-size:.875rem">Both parties agree on a meetup or delivery. Items change hands, smiles happen, planet wins!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px">
+      <div>
+        <div class="footer-logo">TreasureSwap ♻️</div>
+        <div class="footer-copy">Your old thing is someone's new treasure.</div>
+        <div class="footer-copy mt-1">© 2026 TreasureSwap. Made with ❤️</div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Browse</a>
+        <a href="login.html">Sign In</a>
+        <a href="profile.html">Profile</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ ITEM DETAIL MODAL ══════════════ -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" id="detailModalContent" style="max-width:520px">
+    <div class="modal-header">
+      <h2 class="modal-title" id="detailTitle">Item</h2>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+    <div class="modal-footer" id="detailFooter"></div>
+  </div>
+</div>
+
+<!-- ══════════════ AUTH REQUIRED MODAL ══════════════ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-header">
+      <h2 class="modal-title">Sign in to continue</h2>
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center;padding:8px 0">
+        <div style="font-size:3rem;margin-bottom:12px">🔒</div>
+        <p class="text-muted">You need to be signed in to add items to your cart, wishlist, or propose trades.</p>
+        <div style="display:flex;gap:10px;margin-top:20px;justify-content:center">
+          <a href="login.html" class="btn btn-primary">Sign In</a>
+          <a href="login.html?tab=signup" class="btn btn-secondary">Create Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+/* ══════════════ INDEX PAGE LOGIC ══════════════ */
+
+let currentCategory = 'all';
+let currentSearch   = '';
+let currentSort     = 'default';
+
+/* ── Render items grid ──────────────────────── */
+function renderItems() {
+  const grid = document.getElementById('itemsGrid');
+  const meta = document.getElementById('resultMeta');
+  if (!grid) return;
+
+  let items = [...ITEMS];
+
+  // Filter category
+  if (currentCategory !== 'all') {
+    items = items.filter(i => i.category === currentCategory);
+  }
+
+  // Filter search
+  if (currentSearch.trim()) {
+    const q = currentSearch.toLowerCase();
+    items = items.filter(i =>
+      i.title.toLowerCase().includes(q) ||
+      i.description.toLowerCase().includes(q) ||
+      i.category.toLowerCase().includes(q) ||
+      i.ownerName.toLowerCase().includes(q) ||
+      i.seeking.some(s => s.toLowerCase().includes(q))
+    );
+  }
+
+  // Sort
+  switch (currentSort) {
+    case 'price_asc':  items.sort((a,b) => a.price - b.price); break;
+    case 'price_desc': items.sort((a,b) => b.price - a.price); break;
+    case 'name_asc':   items.sort((a,b) => a.title.localeCompare(b.title)); break;
+    case 'newest':     items.sort((a,b) => new Date(b.date) - new Date(a.date)); break;
+  }
+
+  if (meta) {
+    const n = items.length;
+    meta.textContent = n === ITEMS.length
+      ? `Showing all ${n} items`
+      : `${n} result${n !== 1 ? 's' : ''} found`;
+  }
+
+  if (!items.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">Nothing found</div>
+        <div class="empty-text">Try a different search or category</div>
+        <button class="btn btn-secondary btn-sm mt-2" onclick="resetFilters()">Clear Filters</button>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  const user = Auth.current();
+
+  items.forEach((item, idx) => {
+    const inWish  = user ? UserData.inWishlist(user.id, item.id) : false;
+    const inCart  = user ? UserData.getCart(user.id).includes(item.id) : false;
+    const usageClass = item.usage > 50 ? 'worn' : '';
+
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.style.animationDelay = (idx * 0.06) + 's';
+    card.innerHTML = `
+      <div class="item-card-emoji">
+        <span class="item-card-cat-badge">${catLabel(item.category)}</span>
+        <button class="item-card-wish ${inWish ? 'active' : ''}"
+          id="wish-${item.id}"
+          onclick="event.stopPropagation(); toggleWishlist('${item.id}')"
+          title="${inWish ? 'Remove from wishlist' : 'Add to wishlist'}">
+          ${inWish ? '❤️' : '🤍'}
+        </button>
+        ${item.emoji}
+      </div>
+      <div class="item-card-body">
+        <div class="item-title">${item.title}</div>
+        <div class="item-desc">${item.description}</div>
+        <div class="item-price">${fmtPrice(item.price)} <span>estimated value</span></div>
+        <div class="usage-row">
+          <span>Used ${item.usage}%</span>
+          <div class="usage-bar">
+            <div class="usage-fill ${usageClass}" style="width:${item.usage}%"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--text4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Seeking in trade</div>
+          <div class="seeking-row">
+            ${item.seeking.map(s => `<span class="seek-tag">${catLabel(s)}</span>`).join('')}
+          </div>
+        </div>
+        <div class="seller-row">
+          <span class="seller-avatar">${item.ownerAvatar}</span>
+          <span>${item.ownerName}</span>
+          <span style="margin-left:auto;font-size:.72rem">${timeAgo(item.date)}</span>
+        </div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-outline" onclick="event.stopPropagation(); openDetail('${item.id}')">Details</button>
+        <button class="btn btn-secondary" id="cart-${item.id}"
+          onclick="event.stopPropagation(); addToCart('${item.id}')">
+          ${inCart ? '✅ In Cart' : '🛒 Add'}
+        </button>
+        <button class="btn btn-primary" onclick="event.stopPropagation(); proposeTrade('${item.id}')">🤝 Trade</button>
+      </div>
+    `;
+
+    card.addEventListener('click', () => openDetail(item.id));
+    grid.appendChild(card);
+  });
+}
+
+/* ── Reset filters ──────────────────────────── */
+function resetFilters() {
+  currentCategory = 'all';
+  currentSearch   = '';
+  currentSort     = 'default';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('sortSelect').value  = 'default';
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('[data-cat="all"]').classList.add('active');
+  renderItems();
+}
+
+/* ── Toggle wishlist ────────────────────────── */
+function toggleWishlist(itemId) {
+  const user = Auth.current();
+  if (!user) { openModal('authModal'); return; }
+  const added = UserData.toggleWishlist(user.id, itemId);
+  const btn = document.getElementById('wish-' + itemId);
+  if (btn) {
+    btn.textContent = added ? '❤️' : '🤍';
+    btn.classList.toggle('active', added);
+  }
+  Toast.show(added ? '❤️ Added to wishlist!' : 'Removed from wishlist', added ? 'success' : 'info');
+  updateNavBadges();
+}
+
+/* ── Add to cart ────────────────────────────── */
+function addToCart(itemId) {
+  const user = Auth.current();
+  if (!user) { openModal('authModal'); return; }
+  const item = getItem(itemId);
+  if (!item) return;
+
+  // Can't add your own items
+  if (item.ownerId === user.id) {
+    Toast.show('That\'s your own item!', 'error'); return;
+  }
+
+  const added = UserData.addToCart(user.id, itemId);
+  if (!added) {
+    Toast.show('Already in your cart', 'info'); return;
+  }
+  const btn = document.getElementById('cart-' + itemId);
+  if (btn) { btn.textContent = '✅ In Cart'; btn.classList.remove('btn-secondary'); btn.classList.add('btn-green'); }
+  Toast.show('🛒 Added to cart!', 'success');
+  updateNavBadges();
+}
+
+/* ── Propose trade ──────────────────────────── */
+function proposeTrade(itemId) {
+  const user = Auth.current();
+  if (!user) { openModal('authModal'); return; }
+  const item = getItem(itemId);
+  if (!item) return;
+
+  if (item.ownerId === user.id) {
+    Toast.show('That\'s your own item!', 'error'); return;
+  }
+
+  // Add trade directly
+  const trade = {
+    id: 't' + Date.now(),
+    itemId: item.id,
+    itemTitle: item.title,
+    itemEmoji: item.emoji,
+    itemPrice: item.price,
+    ownerName: item.ownerName,
+    status: 'pending',
+    date: new Date().toISOString().split('T')[0]
+  };
+  UserData.addTrade(user.id, trade);
+  Toast.show('🤝 Trade proposal sent to ' + item.ownerName + '!', 'success');
+  updateNavBadges();
+}
+
+/* ── Open item detail modal ─────────────────── */
+function openDetail(itemId) {
+  const item = getItem(itemId);
+  if (!item) return;
+  const user = Auth.current();
+  const inWish = user ? UserData.inWishlist(user.id, item.id) : false;
+  const inCart = user ? UserData.getCart(user.id).includes(item.id) : false;
+  const usageClass = item.usage > 50 ? 'worn' : '';
+
+  document.getElementById('detailTitle').textContent = item.title;
+
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-emoji">${item.emoji}</div>
+    <div class="detail-row">
+      <span class="detail-label">Category</span>
+      <span class="detail-value">${catLabel(item.category)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Estimated Value</span>
+      <span class="detail-value" style="color:var(--blue);font-size:1.1rem;font-family:var(--font-display)">${fmtPrice(item.price)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Condition</span>
+      <div>
+        <div class="detail-value">${item.usage}% used</div>
+        <div class="usage-bar" style="width:140px;margin-top:4px">
+          <div class="usage-fill ${usageClass}" style="width:${item.usage}%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Owner</span>
+      <span class="detail-value">${item.ownerAvatar} ${item.ownerName}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Listed</span>
+      <span class="detail-value">${timeAgo(item.date)}</span>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:.9rem;color:var(--text2);line-height:1.7;margin-bottom:14px">${item.description}</p>
+    <div>
+      <div class="detail-label" style="margin-bottom:8px">Would trade for</div>
+      <div class="seeking-row">
+        ${item.seeking.map(s => `<span class="seek-tag">${catLabel(s)}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  const ownItem = user && item.ownerId === user.id;
+  document.getElementById('detailFooter').innerHTML = ownItem
+    ? `<div class="alert alert-info" style="width:100%;margin:0">This is one of your listed items.</div>`
+    : `
+      <button class="btn btn-ghost" onclick="toggleWishlistFromModal('${item.id}')" id="modalWishBtn">
+        ${inWish ? '❤️ Wishlisted' : '🤍 Wishlist'}
+      </button>
+      <button class="btn btn-secondary" onclick="addToCartFromModal('${item.id}')" id="modalCartBtn">
+        ${inCart ? '✅ In Cart' : '🛒 Add to Cart'}
+      </button>
+      <button class="btn btn-primary" onclick="proposeTradeAndClose('${item.id}')">🤝 Propose Trade</button>
+    `;
+
+  openModal('detailModal');
+}
+
+function toggleWishlistFromModal(id) {
+  toggleWishlist(id);
+  const btn = document.getElementById('modalWishBtn');
+  const inWish = Auth.current() ? UserData.inWishlist(Auth.current().id, id) : false;
+  if (btn) btn.textContent = inWish ? '❤️ Wishlisted' : '🤍 Wishlist';
+}
+function addToCartFromModal(id) {
+  addToCart(id);
+  const btn = document.getElementById('modalCartBtn');
+  if (btn) { btn.textContent = '✅ In Cart'; }
+}
+function proposeTradeAndClose(id) {
+  proposeTrade(id);
+  closeModal('detailModal');
+}
+
+/* ── Event listeners ─────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Update hero signup button
+  const hero = document.getElementById('heroSignupBtn');
+  if (hero && Auth.isLoggedIn()) { hero.href = 'profile.html'; hero.textContent = 'My Profile →'; }
+
+  // Search
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      currentSearch = e.target.value;
+      renderItems();
+    });
+  }
+
+  // Category chips
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentCategory = chip.dataset.cat;
+      renderItems();
+    });
+  });
+
+  // Sort
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', e => {
+      currentSort = e.target.value;
+      renderItems();
+    });
+  }
+
+  // Initial render
+  renderItems();
+});
+</script>
+</body>
+</html>

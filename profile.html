@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — TreasureSwap</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">♻️</div>
+      <div class="nav-logo-text">
+        TreasureSwap
+        <span>barter &amp; trade</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Browse</a>
+      <a href="profile.html" class="nav-link active">My Profile</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="profile.html" class="nav-icon-btn" title="Wishlist">
+        ❤️
+        <span class="nav-badge" id="navWishBadge" style="display:none">0</span>
+      </a>
+      <a href="profile.html" class="nav-icon-btn" title="Cart">
+        🛒
+        <span class="nav-badge" id="navCartBadge" style="display:none">0</span>
+      </a>
+      <a href="login.html" class="btn btn-primary btn-sm" id="navLoginBtn">Sign In</a>
+      <a href="profile.html" id="navProfileBtn" style="display:none">
+        <div class="nav-avatar" id="navAvatar">🧑</div>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ NOT LOGGED IN STATE ══════════════ -->
+<div id="guestView" style="display:none">
+  <div class="container" style="padding:80px 20px;text-align:center">
+    <div style="font-size:4rem;margin-bottom:16px">🔒</div>
+    <h2>Sign in to view your profile</h2>
+    <p class="text-muted mt-2">Your cart, wishlist and trades will appear here once you're signed in.</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">
+      <a href="login.html" class="btn btn-primary btn-lg">Sign In</a>
+      <a href="login.html?tab=signup" class="btn btn-outline btn-lg">Create Account</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LOGGED IN VIEW ══════════════ -->
+<div id="profileView" style="display:none">
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="container">
+      <div class="profile-card">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profileAvatarBig">🧑</div>
+          <div class="profile-online"></div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">User</div>
+          <div class="profile-email" id="profileEmail">email@example.com</div>
+          <div class="profile-meta">
+            <span class="badge badge-blue">🏅 Trader</span>
+            <span class="badge badge-green" id="memberSince">Member since –</span>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="p-stat">
+            <div class="p-stat-val" id="statCart">0</div>
+            <div class="p-stat-lbl">In Cart</div>
+          </div>
+          <div class="p-stat">
+            <div class="p-stat-val" id="statWish">0</div>
+            <div class="p-stat-lbl">Wishlisted</div>
+          </div>
+          <div class="p-stat">
+            <div class="p-stat-val" id="statTrades">0</div>
+            <div class="p-stat-lbl">Trades</div>
+          </div>
+        </div>
+        <div style="margin-left:auto;align-self:flex-start">
+          <button class="btn btn-danger btn-sm" onclick="handleLogout()">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="cart" onclick="switchTab('cart')">
+        🛒 Cart <span class="tab-badge" id="cartTabBadge">0</span>
+      </button>
+      <button class="tab-btn" data-tab="wishlist" onclick="switchTab('wishlist')">
+        ❤️ Wishlist <span class="tab-badge" id="wishTabBadge">0</span>
+      </button>
+      <button class="tab-btn" data-tab="trades" onclick="switchTab('trades')">
+        🤝 Trades <span class="tab-badge" id="tradesTabBadge">0</span>
+      </button>
+    </div>
+
+    <!-- ── CART TAB ── -->
+    <div class="tab-content active" id="tab-cart">
+      <div id="cartContent"></div>
+    </div>
+
+    <!-- ── WISHLIST TAB ── -->
+    <div class="tab-content" id="tab-wishlist">
+      <div id="wishlistContent"></div>
+    </div>
+
+    <!-- ── TRADES TAB ── -->
+    <div class="tab-content" id="tab-trades">
+      <div id="tradesContent"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ══════════════ CHECKOUT CONFIRM MODAL ══════════════ -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <h2 class="modal-title">Confirm Trade Proposals</h2>
+      <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    </div>
+    <div class="modal-body" id="checkoutBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('checkoutModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmCheckout()">✅ Send All Proposals</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ITEM DETAIL MODAL (same as index) ══════════════ -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h2 class="modal-title" id="detailTitle">Item</h2>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+    <div class="modal-footer" id="detailFooter"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+/* ══════════════ PROFILE PAGE LOGIC ══════════════ */
+
+let currentUser = null;
+
+/* ── Switch tabs ─────────────────────────────── */
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + name));
+  if (name === 'cart')     renderCart();
+  if (name === 'wishlist') renderWishlist();
+  if (name === 'trades')   renderTrades();
+}
+
+/* ── Update stat cards ───────────────────────── */
+function updateStats() {
+  if (!currentUser) return;
+  const cart   = UserData.getCart(currentUser.id);
+  const wish   = UserData.getWishlist(currentUser.id);
+  const trades = UserData.getTrades(currentUser.id);
+
+  document.getElementById('statCart').textContent   = cart.length;
+  document.getElementById('statWish').textContent   = wish.length;
+  document.getElementById('statTrades').textContent = trades.length;
+
+  document.getElementById('cartTabBadge').textContent   = cart.length;
+  document.getElementById('wishTabBadge').textContent   = wish.length;
+  document.getElementById('tradesTabBadge').textContent = trades.length;
+
+  updateNavBadges();
+}
+
+/* ── RENDER CART ─────────────────────────────── */
+function renderCart() {
+  if (!currentUser) return;
+  const cartIds = UserData.getCart(currentUser.id);
+  const el = document.getElementById('cartContent');
+  if (!el) return;
+
+  if (!cartIds.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-title">Your cart is empty</div>
+        <div class="empty-text">Browse items and add them to your cart to propose trades.</div>
+        <a href="index.html" class="btn btn-primary btn-sm mt-2">Browse Items →</a>
+      </div>`;
+    return;
+  }
+
+  const items = cartIds.map(id => getItem(id)).filter(Boolean);
+  const total = items.reduce((sum, i) => sum + i.price, 0);
+
+  el.innerHTML = `
+    <div style="margin-bottom:8px;font-size:.875rem;color:var(--text3)">
+      ${items.length} item${items.length !== 1 ? 's' : ''} — propose a trade for each
+    </div>
+    ${items.map(item => `
+      <div class="cart-item">
+        <div class="cart-emoji">${item.emoji}</div>
+        <div class="cart-info">
+          <div class="cart-title">${item.title}</div>
+          <div class="cart-cat">${catLabel(item.category)} · listed by ${item.ownerAvatar} ${item.ownerName}</div>
+          <div class="cart-price">${fmtPrice(item.price)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn btn-outline btn-sm" onclick="openDetailFromProfile('${item.id}')">View</button>
+          <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.id}')">Remove</button>
+        </div>
+      </div>
+    `).join('')}
+    <div class="cart-total-bar">
+      <span class="cart-total-label">Total Estimated Value</span>
+      <span class="cart-total-value">${fmtPrice(total)}</span>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end">
+      <button class="btn btn-ghost btn-sm" onclick="clearCart()">🗑️ Clear Cart</button>
+      <button class="btn btn-primary" onclick="openCheckout()">🤝 Checkout — Propose All Trades</button>
+    </div>
+  `;
+}
+
+function removeFromCart(itemId) {
+  if (!currentUser) return;
+  UserData.removeFromCart(currentUser.id, itemId);
+  Toast.show('Removed from cart', 'info');
+  updateStats();
+  renderCart();
+}
+
+function clearCart() {
+  if (!currentUser) return;
+  if (!confirm('Clear all items from your cart?')) return;
+  UserData.clearCart(currentUser.id);
+  Toast.show('Cart cleared', 'info');
+  updateStats();
+  renderCart();
+}
+
+/* ── CHECKOUT ────────────────────────────────── */
+function openCheckout() {
+  if (!currentUser) return;
+  const cartIds = UserData.getCart(currentUser.id);
+  if (!cartIds.length) return;
+  const items = cartIds.map(id => getItem(id)).filter(Boolean);
+
+  document.getElementById('checkoutBody').innerHTML = `
+    <div class="alert alert-info">You're about to send trade proposals to ${new Set(items.map(i=>i.ownerName)).size} trader(s) for ${items.length} item(s).</div>
+    ${items.map(i => `
+      <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--blue-l);border-radius:var(--r);margin-bottom:8px">
+        <span style="font-size:1.8rem">${i.emoji}</span>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:.9rem">${i.title}</div>
+          <div style="font-size:.78rem;color:var(--text3)">Owner: ${i.ownerAvatar} ${i.ownerName}</div>
+        </div>
+        <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--blue)">${fmtPrice(i.price)}</span>
+      </div>
+    `).join('')}
+    <p style="font-size:.82rem;color:var(--text3);margin-top:8px">Trade proposals will appear in your Trades tab as "Pending". The item owners will respond directly.</p>
+  `;
+  openModal('checkoutModal');
+}
+
+function confirmCheckout() {
+  if (!currentUser) return;
+  const cartIds = UserData.getCart(currentUser.id);
+  const items = cartIds.map(id => getItem(id)).filter(Boolean);
+
+  items.forEach(item => {
+    const trade = {
+      id: 't' + Date.now() + Math.random(),
+      itemId: item.id,
+      itemTitle: item.title,
+      itemEmoji: item.emoji,
+      itemPrice: item.price,
+      ownerName: item.ownerName,
+      ownerAvatar: item.ownerAvatar,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0]
+    };
+    UserData.addTrade(currentUser.id, trade);
+  });
+
+  UserData.clearCart(currentUser.id);
+  closeModal('checkoutModal');
+  Toast.show(`🤝 ${items.length} trade proposal${items.length>1?'s':''} sent!`, 'success', 4000);
+  updateStats();
+  renderCart();
+  switchTab('trades');
+}
+
+/* ── RENDER WISHLIST ─────────────────────────── */
+function renderWishlist() {
+  if (!currentUser) return;
+  const ids = UserData.getWishlist(currentUser.id);
+  const el = document.getElementById('wishlistContent');
+  if (!el) return;
+
+  if (!ids.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">❤️</div>
+        <div class="empty-title">Your wishlist is empty</div>
+        <div class="empty-text">Tap the 🤍 heart on any item to save it here for later.</div>
+        <a href="index.html" class="btn btn-primary btn-sm mt-2">Browse Items →</a>
+      </div>`;
+    return;
+  }
+
+  const items = ids.map(id => getItem(id)).filter(Boolean);
+
+  el.innerHTML = `
+    <div style="margin-bottom:8px;font-size:.875rem;color:var(--text3)">${items.length} saved item${items.length!==1?'s':''}</div>
+    ${items.map(item => `
+      <div class="wish-item">
+        <div class="cart-emoji">${item.emoji}</div>
+        <div class="cart-info">
+          <div class="cart-title">${item.title}</div>
+          <div class="cart-cat">${catLabel(item.category)} · by ${item.ownerAvatar} ${item.ownerName}</div>
+          <div class="cart-price">${fmtPrice(item.price)}</div>
+          <div class="seeking-row mt-1">
+            ${item.seeking.map(s=>`<span class="seek-tag">${catLabel(s)}</span>`).join('')}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn btn-primary btn-sm" onclick="moveToCart('${item.id}')">🛒 Add to Cart</button>
+          <button class="btn btn-outline btn-sm" onclick="openDetailFromProfile('${item.id}')">View</button>
+          <button class="btn btn-danger btn-sm" onclick="removeFromWishlist('${item.id}')">Remove</button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function removeFromWishlist(itemId) {
+  if (!currentUser) return;
+  UserData.toggleWishlist(currentUser.id, itemId);
+  Toast.show('Removed from wishlist', 'info');
+  updateStats();
+  renderWishlist();
+}
+
+function moveToCart(itemId) {
+  if (!currentUser) return;
+  const item = getItem(itemId);
+  if (!item) return;
+  if (item.ownerId === currentUser.id) { Toast.show("That's your own item!", 'error'); return; }
+  UserData.addToCart(currentUser.id, itemId);
+  Toast.show('🛒 Moved to cart!', 'success');
+  updateStats();
+  renderWishlist();
+}
+
+/* ── RENDER TRADES ───────────────────────────── */
+function renderTrades() {
+  if (!currentUser) return;
+  const trades = UserData.getTrades(currentUser.id);
+  const el = document.getElementById('tradesContent');
+  if (!el) return;
+
+  if (!trades.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🤝</div>
+        <div class="empty-title">No trades yet</div>
+        <div class="empty-text">Add items to your cart and checkout to send trade proposals.</div>
+        <a href="index.html" class="btn btn-primary btn-sm mt-2">Browse Items →</a>
+      </div>`;
+    return;
+  }
+
+  const statusMap = {
+    pending:   { label: '⏳ Pending',   cls: 'status-pending' },
+    accepted:  { label: '✅ Accepted',  cls: 'status-accepted' },
+    declined:  { label: '❌ Declined',  cls: 'status-declined' },
+    completed: { label: '🎉 Completed', cls: 'status-completed' }
+  };
+
+  el.innerHTML = `
+    <div style="margin-bottom:8px;font-size:.875rem;color:var(--text3)">${trades.length} trade proposal${trades.length!==1?'s':''}</div>
+    ${trades.map(trade => {
+      const st = statusMap[trade.status] || statusMap.pending;
+      return `
+        <div class="trade-item">
+          <div class="cart-emoji">${trade.itemEmoji || '📦'}</div>
+          <div class="cart-info">
+            <div class="cart-title">${trade.itemTitle}</div>
+            <div class="cart-cat">Owner: ${trade.ownerAvatar || '👤'} ${trade.ownerName} · ${timeAgo(trade.date)}</div>
+            <div class="cart-price">${fmtPrice(trade.itemPrice)}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <span class="trade-status ${st.cls}">${st.label}</span>
+            ${trade.status === 'pending' ? `
+              <button class="btn btn-green btn-sm" onclick="updateTradeStatus('${trade.id}','accepted')">Accept</button>
+              <button class="btn btn-danger btn-sm" onclick="updateTradeStatus('${trade.id}','declined')">Decline</button>
+            ` : ''}
+            ${trade.status === 'accepted' ? `
+              <button class="btn btn-primary btn-sm" onclick="updateTradeStatus('${trade.id}','completed')">Mark Complete</button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('')}
+    <div style="margin-top:16px;padding:12px 16px;background:var(--blue-l);border-radius:var(--r);border:1.5px solid var(--blue-m)">
+      <div style="font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:4px">💡 How trades work</div>
+      <p style="font-size:.78rem;color:var(--text3);line-height:1.6">Pending proposals are waiting for the owner to respond. Once accepted, coordinate with the owner directly to arrange the swap. Mark complete once both items have been exchanged!</p>
+    </div>
+  `;
+}
+
+function updateTradeStatus(tradeId, newStatus) {
+  if (!currentUser) return;
+  const trades = UserData.getTrades(currentUser.id);
+  const t = trades.find(x => x.id === tradeId);
+  if (!t) return;
+  t.status = newStatus;
+  UserData.set(currentUser.id, 'trades', trades);
+  const msgs = { accepted:'✅ Trade accepted!', declined:'Trade declined.', completed:'🎉 Trade marked as complete!' };
+  const types = { accepted:'success', declined:'info', completed:'success' };
+  Toast.show(msgs[newStatus] || 'Updated', types[newStatus] || 'info');
+  renderTrades();
+}
+
+/* ── Item detail from profile ────────────────── */
+function openDetailFromProfile(itemId) {
+  const item = getItem(itemId);
+  if (!item) return;
+  document.getElementById('detailTitle').textContent = item.title;
+  const usageClass = item.usage > 50 ? 'worn' : '';
+
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-emoji">${item.emoji}</div>
+    <div class="detail-row">
+      <span class="detail-label">Category</span>
+      <span class="detail-value">${catLabel(item.category)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Value</span>
+      <span class="detail-value" style="color:var(--blue);font-family:'Syne',sans-serif;font-size:1.1rem">${fmtPrice(item.price)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Condition</span>
+      <div>
+        <div class="detail-value">${item.usage}% used</div>
+        <div class="usage-bar" style="width:120px;margin-top:4px">
+          <div class="usage-fill ${usageClass}" style="width:${item.usage}%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Owner</span>
+      <span class="detail-value">${item.ownerAvatar} ${item.ownerName}</span>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:.9rem;color:var(--text2);line-height:1.7;margin-bottom:12px">${item.description}</p>
+    <div class="seeking-row">
+      ${item.seeking.map(s=>`<span class="seek-tag">${catLabel(s)}</span>`).join('')}
+    </div>
+  `;
+  document.getElementById('detailFooter').innerHTML = `
+    <a href="index.html" class="btn btn-ghost">Back to Browse</a>
+  `;
+  openModal('detailModal');
+}
+
+/* ── Logout ──────────────────────────────────── */
+function handleLogout() {
+  if (!confirm('Sign out of TreasureSwap?')) return;
+  Auth.logout();
+  Toast.show('Signed out. See you soon!', 'info');
+  setTimeout(() => { window.location.href = 'index.html'; }, 800);
+}
+
+/* ── Init ────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  currentUser = Auth.current();
+
+  if (!currentUser) {
+    document.getElementById('guestView').style.display = '';
+    document.getElementById('profileView').style.display = 'none';
+    return;
+  }
+
+  // Show profile view
+  document.getElementById('guestView').style.display = 'none';
+  document.getElementById('profileView').style.display = '';
+
+  // Populate header
+  document.getElementById('profileAvatarBig').textContent = currentUser.avatar;
+  document.getElementById('profileName').textContent       = currentUser.name;
+  document.getElementById('profileEmail').textContent      = currentUser.email;
+  document.getElementById('memberSince').textContent       = '📅 Since ' +
+    new Date(currentUser.joinDate).toLocaleDateString('en-IN', { month:'short', year:'numeric' });
+
+  updateStats();
+  renderCart(); // default tab
+
+  // Check URL hash for tab
+  const hash = window.location.hash.replace('#','');
+  if (['cart','wishlist','trades'].includes(hash)) switchTab(hash);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — TreasureSwap</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- ══════════════ LEFT PANEL ══════════════ -->
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;margin-bottom:32px;text-decoration:none">
+        <div style="width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">♻️</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem">TreasureSwap</div>
+      </a>
+
+      <h2>Trade what you have.<br>Get what you love.</h2>
+      <p>Join our community of traders who believe every object deserves a second life — and no money needs to change hands.</p>
+
+      <div class="auth-feature-list">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🔄</div>
+          <div>
+            <h4>Zero Platform Fees</h4>
+            <p>TreasureSwap is completely free. Trade directly with other members.</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🌿</div>
+          <div>
+            <h4>Eco-Friendly</h4>
+            <p>Every trade keeps items out of landfills. Be part of the circular economy.</p>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🤝</div>
+          <div>
+            <h4>Community First</h4>
+            <p>Real people, real trades. Build relationships with your neighbours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RIGHT PANEL ══════════════ -->
+  <div class="auth-right">
+    <div class="auth-form-box">
+
+      <!-- Logo (mobile only) -->
+      <div class="auth-logo-row" style="display:none" id="mobileLogo">
+        <div style="width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem">♻️</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--blue);font-size:1rem">TreasureSwap</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</div>
+        <div class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Create Account</div>
+      </div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div class="auth-form active" id="loginForm">
+        <h2>Welcome back! 👋</h2>
+        <p>Sign in to your TreasureSwap account</p>
+
+        <div class="demo-box">
+          <h4>DEMO ACCOUNTS — CLICK TO FILL</h4>
+          <button class="demo-pill" onclick="fillDemo('praks@demo.com','praks123')">👩 Praks</button>
+          <button class="demo-pill" onclick="fillDemo('bomm@demo.com','bomm123')">👨 Bomm</button>
+        </div>
+
+        <div id="loginError" class="alert alert-error" style="display:none"></div>
+
+        <div class="form-stack">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">📧</span>
+              <input
+                type="email" id="loginEmail"
+                class="form-input"
+                placeholder="you@example.com"
+                autocomplete="email"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password" id="loginPassword"
+                class="form-input"
+                placeholder="Your password"
+                autocomplete="current-password"
+              >
+              <span class="input-suffix" id="toggleLoginPw" onclick="togglePwVis('loginPassword','toggleLoginPw')">👁️</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-xl btn-full" id="loginBtn" onclick="handleLogin()">
+            Sign In →
+          </button>
+
+          <div class="or-divider">or</div>
+
+          <p style="text-align:center;font-size:.875rem;color:var(--text3)">
+            Don't have an account?
+            <a href="#" onclick="switchTab('signup');return false;" style="color:var(--blue);font-weight:700">Create one free →</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- ── SIGNUP FORM ── -->
+      <div class="auth-form" id="signupForm">
+        <h2>Join TreasureSwap ✨</h2>
+        <p>Create your free account and start trading</p>
+
+        <div id="signupError" class="alert alert-error" style="display:none"></div>
+        <div id="signupSuccess" class="alert alert-success" style="display:none"></div>
+
+        <div class="form-stack">
+          <div class="form-group">
+            <label class="form-label" for="signupName">Full Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input
+                type="text" id="signupName"
+                class="form-input"
+                placeholder="Your name"
+                autocomplete="name"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupEmail">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">📧</span>
+              <input
+                type="email" id="signupEmail"
+                class="form-input"
+                placeholder="you@example.com"
+                autocomplete="email"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupPassword">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password" id="signupPassword"
+                class="form-input"
+                placeholder="At least 6 characters"
+                autocomplete="new-password"
+                oninput="checkPwStrength(this.value,'pwBar','pwLabel')"
+              >
+              <span class="input-suffix" onclick="togglePwVis('signupPassword',this)">👁️</span>
+            </div>
+            <div class="pw-bar" id="pwBar">
+              <div class="pw-seg"></div>
+              <div class="pw-seg"></div>
+              <div class="pw-seg"></div>
+              <div class="pw-seg"></div>
+            </div>
+            <div class="pw-label" id="pwLabel"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupConfirm">Confirm Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password" id="signupConfirm"
+                class="form-input"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+              >
+            </div>
+            <div class="form-error" id="confirmError" style="display:none">Passwords don't match</div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <input type="checkbox" id="termsCheck" style="margin-top:3px;accent-color:var(--blue);width:15px;height:15px;cursor:pointer">
+            <label for="termsCheck" style="font-size:.82rem;color:var(--text3);cursor:pointer;line-height:1.5">
+              I agree to TreasureSwap's community guidelines and understand this is a barter platform — no cash transactions.
+            </label>
+          </div>
+
+          <button class="btn btn-primary btn-xl btn-full" id="signupBtn" onclick="handleSignup()">
+            Create Account →
+          </button>
+
+          <p style="text-align:center;font-size:.875rem;color:var(--text3)">
+            Already have an account?
+            <a href="#" onclick="switchTab('login');return false;" style="color:var(--blue);font-weight:700">Sign in →</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+/* ══════════════ LOGIN PAGE LOGIC ══════════════ */
+
+/* ── Tab switching ──────────────────────────── */
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  document.getElementById(tab + 'Form').classList.add('active');
+
+  // Clear errors
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('signupError').style.display = 'none';
+}
+
+/* ── Fill demo credentials ──────────────────── */
+function fillDemo(email, password) {
+  document.getElementById('loginEmail').value = email;
+  document.getElementById('loginPassword').value = password;
+  // Flash the inputs
+  ['loginEmail','loginPassword'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'var(--blue)';
+    setTimeout(() => el.style.borderColor = '', 800);
+  });
+}
+
+/* ── Toggle password visibility ─────────────── */
+function togglePwVis(inputId, btnEl) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    if (typeof btnEl === 'string') document.getElementById(btnEl).textContent = '🙈';
+    else if (btnEl) btnEl.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    if (typeof btnEl === 'string') document.getElementById(btnEl).textContent = '👁️';
+    else if (btnEl) btnEl.textContent = '👁️';
+  }
+}
+
+/* ── Handle login ───────────────────────────── */
+function handleLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl  = document.getElementById('loginError');
+  const btn      = document.getElementById('loginBtn');
+
+  errorEl.style.display = 'none';
+
+  if (!email || !password) {
+    errorEl.textContent = 'Please fill in both fields.';
+    errorEl.style.display = '';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+
+  setTimeout(() => {
+    const result = Auth.login(email, password);
+    if (!result.ok) {
+      errorEl.textContent = result.msg;
+      errorEl.style.display = '';
+      btn.disabled = false;
+      btn.textContent = 'Sign In →';
+      document.getElementById('loginPassword').style.borderColor = 'var(--red)';
+      setTimeout(() => document.getElementById('loginPassword').style.borderColor = '', 1500);
+    } else {
+      btn.textContent = '✅ Success! Redirecting…';
+      btn.style.background = 'var(--green)';
+      // Redirect after short delay
+      const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+      setTimeout(() => { window.location.href = redirect; }, 700);
+    }
+  }, 400);
+}
+
+/* ── Handle signup ──────────────────────────── */
+function handleSignup() {
+  const name     = document.getElementById('signupName').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const confirm  = document.getElementById('signupConfirm').value;
+  const terms    = document.getElementById('termsCheck').checked;
+  const errorEl  = document.getElementById('signupError');
+  const successEl= document.getElementById('signupSuccess');
+  const btn      = document.getElementById('signupBtn');
+
+  errorEl.style.display = 'none';
+  successEl.style.display = 'none';
+  document.getElementById('confirmError').style.display = 'none';
+
+  if (!terms) {
+    errorEl.textContent = 'Please agree to the community guidelines.';
+    errorEl.style.display = '';
+    return;
+  }
+  if (password !== confirm) {
+    document.getElementById('confirmError').style.display = '';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating account…';
+
+  setTimeout(() => {
+    const result = Auth.signup(name, email, password);
+    if (!result.ok) {
+      errorEl.textContent = result.msg;
+      errorEl.style.display = '';
+      btn.disabled = false;
+      btn.textContent = 'Create Account →';
+    } else {
+      successEl.textContent = `🎉 Welcome, ${result.user.name}! Account created. Redirecting…`;
+      successEl.style.display = '';
+      btn.textContent = '✅ Done!';
+      btn.style.background = 'var(--green)';
+      setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+    }
+  }, 500);
+}
+
+/* ── Keyboard submit ─────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Show mobile logo on small screens
+  if (window.innerWidth <= 768) {
+    const logo = document.getElementById('mobileLogo');
+    if (logo) logo.style.display = 'flex';
+  }
+
+  // Auto-switch tab if URL param says so
+  const tab = new URLSearchParams(window.location.search).get('tab');
+  if (tab === 'signup') switchTab('signup');
+
+  // If already logged in, redirect
+  if (Auth.isLoggedIn()) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // Enter key on login form
+  ['loginEmail','loginPassword'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+  });
+
+  // Enter key on signup form
+  ['signupName','signupEmail','signupPassword','signupConfirm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignup(); });
+  });
+
+  // Confirm password realtime
+  const confirmInput = document.getElementById('signupConfirm');
+  if (confirmInput) {
+    confirmInput.addEventListener('input', () => {
+      const pw = document.getElementById('signupPassword').value;
+      const confirmErr = document.getElementById('confirmError');
+      if (confirmInput.value && confirmInput.value !== pw) {
+        confirmErr.style.display = '';
+      } else {
+        confirmErr.style.display = 'none';
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>
